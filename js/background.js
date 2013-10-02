@@ -48,6 +48,7 @@ Notifications.prototype.showNotification = function(event) {
 
 Notifications.prototype.fetchLatestNotification = function() {
     $.getJSON("http://www.kogan.com/au/api/events/", function(data) {
+        localStorage.setItem("notifications", JSON.stringify(response));
         var lastNotifcation = localStorage.getItem(notificationKey);
         if(lastNotifcation != data[0].data.url) {
             _this.showNotification(data[0]);
@@ -58,13 +59,16 @@ Notifications.prototype.fetchLatestNotification = function() {
 };
 
 Notifications.prototype.getLatestPushNotification = function() {
-    this.fetchLatestNotification();
 
     var count;
     var last_checked = localStorage.getItem(lastCheckKey);
     $.getJSON("http://www.kogan.com/au/api/events/count/", {'timestamp': last_checked}, function(data) {
         count = data['count'];
         last_checked = data['timestamp'];
+
+        if(count > 0) {
+            _this.fetchLatestNotification();
+        }
         _this.resetBadgeText(count);
         localStorage.setItem(lastCheckKey, last_checked);
     });

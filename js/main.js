@@ -3,14 +3,21 @@ var KoganApp = angular.module('KoganApp', []);
 var utm = '?utm_source=kogan&utm_medium=chrome-extension';
 
 function NotificationsController($scope, $http) {
-    $http.get('http://www.kogan.com/au/api/events/').success(function(response){
-        
-        angular.forEach(response, function(value, key){
-           value.data.url += utm + '&utm_campaign=' + value.type ;
+    var notifications = JSON.parse(localStorage.getItem('notifications'));
+    if(notifications !== null) {
+        $scope.notifications = notifications;
+    }
+    else {
+        $http.get('http://www.kogan.com/au/api/events/').success(function(response){
+
+            angular.forEach(response, function(value, key){
+               value.data.url += utm + '&utm_campaign=' + value.type ;
+            });
+            $scope.notifications = response;
+            localStorage.setItem('notifications', JSON.stringify(response));
+            chrome.browserAction.setBadgeText({'text': ''});
         });
-        $scope.notifications = response;
-        chrome.browserAction.setBadgeText({'text': ''});
-    });
+    }
 }
 
 
