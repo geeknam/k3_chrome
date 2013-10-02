@@ -10,10 +10,10 @@
         "https://www.googleapis.com/",
         "pushMessaging",
         "notifications",
-        "background",
+        "background"
     ],
     "background": {
-        "scripts": ["js/background.js"]
+        "page": "background_page.html"
     },
     "web_accessible_resources": [
         "icon.png"
