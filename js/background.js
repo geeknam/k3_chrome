@@ -13,19 +13,21 @@ var Notifications = function(){
 Notifications.prototype.init = function(){
     if (typeof(localStorage) != 'undefined') {
         var checkInterval = setInterval(this.checkForNewEvents, minutesPerCheck * 60000);
-        this.getLatestPushNotification(false);
+        this.getLatestPushNotification();
     }
 };
 
 Notifications.prototype.checkForNewEvents = function() {
-    _this.getLatestPushNotification(true);
+    _this.getLatestPushNotification();
 };
 
 Notifications.prototype.resetBadgeText = function(value) {
-    if (value > 0) {
-        chrome.browserAction.setBadgeText({ text: value.toString() });
+    if (value > 20) {
+        chrome.browserAction.setBadgeText({text: '20+'});
+    } else if (value > 0) {
+        chrome.browserAction.setBadgeText({text: value.toString()});
     } else {
-        chrome.browserAction.setBadgeText({ text: "" });
+        chrome.browserAction.setBadgeText({text: ""});
     }
     unreadEvents = value;
 };
@@ -55,19 +57,17 @@ Notifications.prototype.fetchLatestNotification = function() {
     });
 };
 
-Notifications.prototype.getLatestPushNotification = function(alertOnChange) {
+Notifications.prototype.getLatestPushNotification = function() {
     this.fetchLatestNotification();
-    // var count;
-    // var last_checked = localStorage.getItem(lastCheckKey);
-    // $.getJSON("http://www.kogan.com/au/api/events/count/", {'timestamp': last_checked}, function(data) {
-    //     count = data['count'];
-    //     last_checked = data['timestamp'];
 
-    //     if (alertOnChange && count > 0) {
-    //         _this.fetchLatestNotification();
-    //     }
-    //     localStorage.setItem(lastCheckKey, last_checked);
-    // });
+    var count;
+    var last_checked = localStorage.getItem(lastCheckKey);
+    $.getJSON("http://www.kogan.com/au/api/events/count/", {'timestamp': last_checked}, function(data) {
+        count = data['count'];
+        last_checked = data['timestamp'];
+        _this.resetBadgeText(count);
+        localStorage.setItem(lastCheckKey, last_checked);
+    });
 
 };
 

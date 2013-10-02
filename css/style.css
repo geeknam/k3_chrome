@@ -3,6 +3,10 @@ body {
     margin: 0px;
 }
 
+a {
+  text-decoration: none;
+}
+
 ul {
     list-style-type: none;
     -webkit-margin-before: 0px;
@@ -56,7 +60,6 @@ ul {
 #notification-wrapper ul li a {
   color: black;
   font-weight: bold;
-  text-decoration: none;
   font-size: 14px;
 }
 #notification-wrapper ul li a:hover {
@@ -109,4 +112,29 @@ ul {
   font-size: 10px;
   float: right;
   margin-top: 5px;
+}
+
+a.notifications-view-more {
+    background-image: linear-gradient(bottom, rgb(81,97,121) 0%, rgb(121,133,152) 50%);
+    background-image: -o-linear-gradient(bottom, rgb(81,97,121) 0%, rgb(121,133,152) 50%);
+    background-image: -moz-linear-gradient(bottom, rgb(81,97,121) 0%, rgb(121,133,152) 50%);
+    background-image: -webkit-linear-gradient(bottom, rgb(81,97,121) 0%, rgb(121,133,152) 50%);
+    background-image: -ms-linear-gradient(bottom, rgb(81,97,121) 0%, rgb(121,133,152) 50%);
+
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0, rgb(81,97,121)),
+        color-stop(0.5, rgb(121,133,152))
+    );
+    display:block;
+    margin: 0;
+    padding: 10px 0;
+    text-align: center;
+    color: #fff;
+    &:hover {
+        text-decoration: underline;
+        color: #fff;
+    }
 }

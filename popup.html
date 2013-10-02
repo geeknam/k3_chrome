@@ -11,7 +11,7 @@
     <div id="notification-wrapper">
         <ul id="notification-list">
             <li data-ng-repeat="notification in notifications">
-            <section class="notification-box" onclick="window.open({{ notification.data.url }},'_blank');">
+            <section class="notification-box">
                 <div class="image">
                     <a href="http://www.kogan.com{{ notification.data.url }}" target="_blank"><img src="{{ notification.data.image_url }}" alt="{{ notification.data.title }}"/></a>
                 </div>
@@ -27,6 +27,7 @@
             </li>
         </ul>
     </div>
+     <a href="http://www.kogan.com/au/notification/all/" class="notifications-view-more" target="_blank">View more</a>
 
     </body>
 </html>
