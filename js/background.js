@@ -47,14 +47,17 @@ function NotificationsController($scope, $http) {
             _this.resetBadgeText(unreadEvents - 1);
         };
         notification.show();
+        setTimeout(function() {
+            notification.cancel();
+        }, 5000);
     };
 
     Notifications.prototype.fetchLatestNotification = function() {
 
         $http.get(API_URL).success(function(data){
 
-            var lastNotifcation = localStorage.getItem(NOTIFICATION_KEY);
-            if(lastNotifcation != data[0].data.url) {
+            var lastNotification = localStorage.getItem(NOTIFICATION_KEY);
+            if(lastNotification != data[0].data.url) {
                 _this.showNotification(data[0]);
                 _this.resetBadgeText(unreadEvents + 1);
                 localStorage.setItem(NOTIFICATION_KEY, data[0].data.url);
