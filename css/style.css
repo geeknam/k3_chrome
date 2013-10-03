@@ -34,6 +34,15 @@ ul {
   font-weight: bold;
   font-size: 13px;
 }
+#notification-wrapper .logo {
+  margin: auto;
+  text-align: center;
+  padding-top: 10px;
+  border-bottom: 1px solid #ccc;
+}
+#notification-wrapper .logo img {
+  height: 30px;
+}
 #notification-wrapper ul .new {
   background-color: #f0f5f9;
 }
