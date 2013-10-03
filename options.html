@@ -2,18 +2,19 @@
     <head>
         <title>Options Page</title>
         <script src="js/angular.min.js"></script>
+        <script src="js/settings.js"></script>
         <script src="js/options.js"></script>
         <link rel="stylesheet" type="text/css" href="css/options.css">
     </head>
-    <body>
+    <body data-ng-controller="OptionsController">
 
     <article>
         <img src="logo.png">
         <section>
             <h2>Show notifications:</h2>
             <ul id="button-color">
-                <li><input type="radio" name="show_notification" value="1" checked><label>Yes</label></li>
-                <li><input type="radio" name="show_notification" value="5"><label>No</label></li>
+                <li><input type="radio" ng-model="show_notification" value="1"><label>Yes</label></li>
+                <li><input type="radio" ng-model="show_notification" value="0"><label>No</label></li>
             </ul> 
         </section>
         <section>
@@ -29,13 +30,13 @@
         <section>
             <h2>Check every:</h2>
             <ul id="button-color">
-                <li><input type="radio" name="poll_interval" value="1" checked><label for="id_button_original">1 minute</label></li>
-                <li><input type="radio" name="poll_interval" value="5"><label for="id_button_grey">5 minutes</label></li>
-                <li><input type="radio" name="poll_interval" value="10"><label for="id_button_light">10 minutes</label></li>
+                <li><input type="radio" ng-model="poll_interval" value="1"><label for="id_button_original">1 minute</label></li>
+                <li><input type="radio" ng-model="poll_interval" value="5"><label for="id_button_grey">5 minutes</label></li>
+                <li><input type="radio" ng-model="poll_interval" value="10"><label for="id_button_light">10 minutes</label></li>
             </ul> 
         </section>
         <section class="action">
-            <button>Save Changes</button>
+            <button ng-click="save_options()">Save Changes</button>
         </section>
     </article>
     </body>
