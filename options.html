@@ -1,0 +1,42 @@
+<html data-ng-app="KoganApp" data-ng-csp>
+    <head>
+        <title>Options Page</title>
+        <script src="js/angular.min.js"></script>
+        <script src="js/options.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/options.css">
+    </head>
+    <body>
+
+    <article>
+        <img src="logo.png">
+        <section>
+            <h2>Show notifications:</h2>
+            <ul id="button-color">
+                <li><input type="radio" name="show_notification" value="1" checked><label>Yes</label></li>
+                <li><input type="radio" name="show_notification" value="5"><label>No</label></li>
+            </ul> 
+        </section>
+        <section>
+            <h2>Notify me about:</h2>
+            <ul>
+                <li><input type="checkbox" name="new-product" /><label for="id_inject_hn">New Products</label></li>
+                <li><input type="checkbox" name="price-drops" /><label for="id_inject_twitter">Price Drops</label></li>
+                <li><input type="checkbox" name="free-shipping"  /><label for="id_inject_gr">Free Shipping</label></li>
+                <li><input type="checkbox" name="in-stock" /><label for="id_inject_quora">Back In Stock</label></li>
+                <li><input type="checkbox" name="blog-posts" /><label for="id_inject_dribbble">Blog Posts</label></li>
+            </ul>
+        </section>
+        <section>
+            <h2>Check every:</h2>
+            <ul id="button-color">
+                <li><input type="radio" name="poll_interval" value="1" checked><label for="id_button_original">1 minute</label></li>
+                <li><input type="radio" name="poll_interval" value="5"><label for="id_button_grey">5 minutes</label></li>
+                <li><input type="radio" name="poll_interval" value="10"><label for="id_button_light">10 minutes</label></li>
+            </ul> 
+        </section>
+        <section class="action">
+            <button>Save Changes</button>
+        </section>
+    </article>
+    </body>
+</html>
