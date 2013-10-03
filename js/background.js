@@ -59,7 +59,6 @@ function NotificationsController($scope, $http) {
             var lastNotification = localStorage.getItem(NOTIFICATION_KEY);
             if(lastNotification != data[0].data.url) {
                 _this.showNotification(data[0]);
-                _this.resetBadgeText(unreadEvents + 1);
                 localStorage.setItem(NOTIFICATION_KEY, data[0].data.url);
             }
 
