@@ -1,6 +1,6 @@
 var KoganApp = angular.module('KoganApp', []);
 
-var minutesPerCheck = 5;
+var minutesPerCheck = 1;
 
 var unreadEvents = 0;
 var _this;
