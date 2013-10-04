@@ -37,5 +37,5 @@ var OPTIONS_KEY = 'options';
 var DEFAULT_OPTIONS = {
     'show_notification': '1',
     'poll_interval': '1',
-    'event_types': EVENT_TYPES,
+    // 'event_types': EVENT_TYPES,
 };
