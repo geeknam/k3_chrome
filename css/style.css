@@ -7,6 +7,10 @@ a {
   text-decoration: none;
 }
 
+a:focus, a:active{
+    outline:none;
+}
+
 ul {
     list-style-type: none;
     -webkit-margin-before: 0px;
@@ -38,6 +42,7 @@ ul {
   margin: auto;
   text-align: center;
   padding-top: 10px;
+  padding-bottom: 4px;
   border-bottom: 1px solid #ccc;
 }
 #notification-wrapper .logo img {
