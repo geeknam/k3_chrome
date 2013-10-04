@@ -105,6 +105,26 @@ function NotificationsController($scope, $http) {
 
     new Notifications();
 
+    chrome.runtime.onMessage.addListener(
+        function(product, sender, sendResponse) {
+
+            var notification = webkitNotifications.createNotification(
+                'http://www.kogan.com/thumb/' + product.image + '?size=210x140',
+                product.title,
+                'Only $' + product.your_price + ' at Kogan'
+            );
+
+            notification.onclick = function() {
+                chrome.tabs.create({url: 'http://www.kogan.com'+ product.url});
+            };
+            notification.show();
+            setTimeout(function() {
+                notification.cancel();
+            }, 5000);
+
+        }
+    );
+
 }
 
 

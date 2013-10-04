@@ -39,3 +39,6 @@ var DEFAULT_OPTIONS = {
     'poll_interval': '1',
     // 'event_types': EVENT_TYPES,
 };
+
+
+var SEARCH_API_URL = "http://www.kogan.com/au/api/search/";

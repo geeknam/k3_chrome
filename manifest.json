@@ -10,12 +10,24 @@
         "https://www.googleapis.com/",
         "pushMessaging",
         "notifications",
-        "background"
+        "background",
+        "tabs"
     ],
     "background": {
         "page": "background_page.html"
     },
     "options_page": "options.html",
+    "content_scripts": [
+        {
+            "matches": ["http://*.harveynorman.com.au/*"],
+            "js": [
+                "js/jquery.min.js",
+                "js/settings.js",
+                "js/harvey_inject.js"
+            ]
+        }
+  ],
+
     "web_accessible_resources": [
         "icon.png"
     ],
@@ -23,9 +35,9 @@
         "default_icon": "icon.png",
         "default_popup": "popup.html"
     },
-    "icons": { 
-        "16":"icon.png", 
-        "48":"icon.png", 
-        "128":"icon.png" 
+    "icons": {
+        "16":"icon.png",
+        "48":"icon.png",
+        "128":"icon.png"
     }
 }
