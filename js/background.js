@@ -1,6 +1,6 @@
 var KoganApp = angular.module('KoganApp', []);
 
-var minutesPerCheck = 1;
+var poll_interval = 1; //minute
 
 var unreadEvents = 0;
 var _this;
@@ -14,10 +14,24 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.init = function(){
+        var options = localStorage[OPTIONS_KEY];
+        var interval = this.get_poll_interval(options);
+        if(!options){
+            options = DEFAULT_OPTIONS;
+            localStorage[OPTIONS_KEY] = JSON.stringify(options);
+        }
+
         if (typeof(localStorage) != 'undefined') {
-            var checkInterval = setInterval(this.checkForNewEvents, minutesPerCheck * 60000);
+            var checkInterval = setInterval(this.checkForNewEvents, interval * 60000);
             this.getLatestPushNotification();
         }
+    };
+
+    Notifications.prototype.get_poll_interval = function(options) {
+        if(!options) {
+            return poll_interval;
+        }
+        return parseInt(JSON.parse(options)['poll_interval']);
     };
 
     Notifications.prototype.checkForNewEvents = function() {
@@ -53,12 +67,15 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.fetchLatestNotification = function() {
+        var show_notification = JSON.parse(localStorage['options'])['show_notification'];
 
         $http.get(API_URL).success(function(data){
 
             var lastNotification = localStorage.getItem(NOTIFICATION_KEY);
             if(lastNotification != data[0].data.url) {
-                _this.showNotification(data[0]);
+                if(show_notification == '1') {
+                    _this.showNotification(data[0]);
+                }
                 localStorage.setItem(NOTIFICATION_KEY, data[0].data.url);
             }
 
