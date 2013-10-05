@@ -25,6 +25,30 @@ function NotificationsController($scope, $http) {
             var checkInterval = setInterval(this.checkForNewEvents, interval * 60000);
             this.getLatestPushNotification();
         }
+
+        this.listen();
+    };
+
+    Notifications.prototype.listen = function() {
+        chrome.runtime.onMessage.addListener(
+            function(product, sender, sendResponse) {
+
+                var notification = webkitNotifications.createNotification(
+                    'http://www.kogan.com/thumb/' + product.image + '?size=210x140',
+                    'Only $' + product.your_price + ' at Kogan',
+                    product.title
+                );
+
+                notification.onclick = function() {
+                    chrome.tabs.create({url: 'http://www.kogan.com'+ product.url});
+                };
+                notification.show();
+                setTimeout(function() {
+                    notification.cancel();
+                }, 7000);
+
+            }
+        );
     };
 
     Notifications.prototype.get_poll_interval = function(options) {
@@ -104,26 +128,6 @@ function NotificationsController($scope, $http) {
     };
 
     new Notifications();
-
-    chrome.runtime.onMessage.addListener(
-        function(product, sender, sendResponse) {
-
-            var notification = webkitNotifications.createNotification(
-                'http://www.kogan.com/thumb/' + product.image + '?size=210x140',
-                product.title,
-                'Only $' + product.your_price + ' at Kogan'
-            );
-
-            notification.onclick = function() {
-                chrome.tabs.create({url: 'http://www.kogan.com'+ product.url});
-            };
-            notification.show();
-            setTimeout(function() {
-                notification.cancel();
-            }, 5000);
-
-        }
-    );
 
 }
 

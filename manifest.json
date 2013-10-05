@@ -3,7 +3,7 @@
 
     "name": "Kogan Chrome Extension",
     "description": "Kogan Product Notifications",
-    "version": "1.0.2",
+    "version": "1.0.3",
 
     "permissions": [
         "http://www.kogan.com/",
@@ -23,7 +23,15 @@
             "js": [
                 "js/jquery.min.js",
                 "js/settings.js",
-                "js/harvey_inject.js"
+                "js/content_scripts/harvey_inject.js"
+            ]
+        },
+        {
+            "matches": ["http://*.dicksmith.com.au/*"],
+            "js": [
+                "js/jquery.min.js",
+                "js/settings.js",
+                "js/content_scripts/dicksmith_inject.js"
             ]
         }
   ],
