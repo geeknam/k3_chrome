@@ -23,7 +23,7 @@
             "js": [
                 "js/angular.min.js",
                 "js/settings.js",
-                "js/content_scripts/harvey_inject.js",
+                "js/content_scripts/harvey.js",
                 "js/content_scripts/base.js"
             ]
         },
@@ -32,7 +32,7 @@
             "js": [
                 "js/angular.min.js",
                 "js/settings.js",
-                "js/content_scripts/dicksmith_inject.js",
+                "js/content_scripts/dicksmith.js",
                 "js/content_scripts/base.js"
             ]
         },
@@ -41,7 +41,16 @@
             "js": [
                 "js/angular.min.js",
                 "js/settings.js",
-                "js/content_scripts/jbhifi_inject.js",
+                "js/content_scripts/jbhifi.js",
+                "js/content_scripts/base.js"
+            ]
+        },
+        {
+            "matches": ["http://*.officeworks.com.au/*"],
+            "js": [
+                "js/angular.min.js",
+                "js/settings.js",
+                "js/content_scripts/officeworks.js",
                 "js/content_scripts/base.js"
             ]
         }
