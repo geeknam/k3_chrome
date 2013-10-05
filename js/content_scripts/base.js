@@ -11,7 +11,7 @@ body[0].setAttribute("data-ng-controller", "NotificationsController");
 function NotificationsController($scope, $http) {
 
     try {
-        $http.get(SEARCH_API_URL + '?keywords=' + product_name).success(function(data){
+        $http.get(SEARCH_API_URL + '?limit=1&keywords=' + product_name).success(function(data){
             if(data.objects.length) {
                 var product = data.objects[0];
                 if(product.your_price < price) {
