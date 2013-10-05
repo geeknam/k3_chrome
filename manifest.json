@@ -53,6 +53,15 @@
                 "js/content_scripts/officeworks.js",
                 "js/content_scripts/base.js"
             ]
+        },
+        {
+            "matches": ["http://*.thegoodguys.com.au/*"],
+            "js": [
+                "js/angular.min.js",
+                "js/settings.js",
+                "js/content_scripts/thegoodguys.js",
+                "js/content_scripts/base.js"
+            ]
         }
   ],
 
