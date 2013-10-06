@@ -10,23 +10,49 @@ function NotificationsController($scope, $http) {
 
     var Notifications = function(){
         _this = this;
+        this.options = null;
         this.init();
     };
 
     Notifications.prototype.init = function(){
-        var options = localStorage[OPTIONS_KEY];
-        var interval = this.get_poll_interval(options);
-        if(!options){
-            options = DEFAULT_OPTIONS;
-            localStorage[OPTIONS_KEY] = JSON.stringify(options);
-        }
+        this.init_options();
+        var interval = this.get_poll_interval();
 
         if (typeof(localStorage) != 'undefined') {
-            var checkInterval = setInterval(this.checkForNewEvents, interval * 60000);
+            var checkInterval = setInterval(this.getLatestPushNotification, interval * 60000);
             this.getLatestPushNotification();
         }
 
+        // Listen for messages from content script
         this.listen();
+    };
+
+    Notifications.prototype.init_options = function() {
+        this.options = localStorage[OPTIONS_KEY];
+        if(!this.options){
+            this.options = DEFAULT_OPTIONS;
+            localStorage[OPTIONS_KEY] = JSON.stringify(this.options);
+        }
+        else{
+            this.options = JSON.parse(this.options);
+        }
+    };
+
+    Notifications.prototype.get_preferred_event_types = function() {
+        var preferred = [];
+        angular.forEach(this.options['event_types'], function(event, idx) {
+            if(event.checked) {
+                preferred.push(event.value);
+            }
+        });
+        return preferred;
+    };
+
+    Notifications.prototype.get_poll_interval = function() {
+        if(!this.options) {
+            return poll_interval;
+        }
+        return parseInt(this.options['poll_interval']);
     };
 
     Notifications.prototype.listen = function() {
@@ -40,7 +66,9 @@ function NotificationsController($scope, $http) {
                 );
 
                 notification.onclick = function() {
-                    chrome.tabs.create({url: 'http://www.kogan.com'+ product.url});
+                    chrome.tabs.create({
+                        url: 'http://www.kogan.com'+ product.url + UTM + '&utm_campaign=price-match'
+                    });
                 };
                 notification.show();
                 setTimeout(function() {
@@ -49,17 +77,6 @@ function NotificationsController($scope, $http) {
 
             }
         );
-    };
-
-    Notifications.prototype.get_poll_interval = function(options) {
-        if(!options) {
-            return poll_interval;
-        }
-        return parseInt(JSON.parse(options)['poll_interval']);
-    };
-
-    Notifications.prototype.checkForNewEvents = function() {
-        _this.getLatestPushNotification();
     };
 
     Notifications.prototype.resetBadgeText = function(value) {
@@ -71,6 +88,17 @@ function NotificationsController($scope, $http) {
             chrome.browserAction.setBadgeText({text: ""});
         }
         unreadEvents = value;
+    };
+
+    Notifications.prototype.validate_notification = function(event) {
+        this.init_options();
+        var show_notification = this.options['show_notification'];
+        var lastNotification = localStorage.getItem(NOTIFICATION_KEY);
+        var preferred = this.get_preferred_event_types();
+        if(lastNotification != event.data.url && show_notification == '1') {
+            return preferred.indexOf(event.type) != -1;
+        }
+        return false;
     };
 
     Notifications.prototype.showNotification = function(event) {
@@ -91,15 +119,11 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.fetchLatestNotification = function() {
-        var show_notification = JSON.parse(localStorage['options'])['show_notification'];
 
         $http.get(API_URL).success(function(data){
 
-            var lastNotification = localStorage.getItem(NOTIFICATION_KEY);
-            if(lastNotification != data[0].data.url) {
-                if(show_notification == '1') {
-                    _this.showNotification(data[0]);
-                }
+            if(_this.validate_notification(data[0])) {
+                _this.showNotification(data[0]);
                 localStorage.setItem(NOTIFICATION_KEY, data[0].data.url);
             }
 
