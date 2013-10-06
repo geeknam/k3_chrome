@@ -1,6 +1,8 @@
 var KoganApp = angular.module('KoganApp', []);
 
 function OptionsController($scope) {
+    $scope.status = 'Save Changes';
+
     var options = localStorage[OPTIONS_KEY];
     if(!options){
         options = DEFAULT_OPTIONS;
@@ -21,5 +23,6 @@ function OptionsController($scope) {
             'event_types': this.event_types
         };
         localStorage[OPTIONS_KEY] = JSON.stringify(options);
+        $scope.status = 'Saved';
     };
 }
