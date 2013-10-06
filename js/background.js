@@ -73,7 +73,7 @@ function NotificationsController($scope, $http) {
                 notification.show();
                 setTimeout(function() {
                     notification.cancel();
-                }, 7000);
+                }, 9000);
 
             }
         );
