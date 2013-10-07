@@ -46,6 +46,15 @@
             ]
         },
         {
+            "matches": ["http://*.jbhifionline.com.au/*"],
+            "js": [
+                "js/angular.min.js",
+                "js/settings.js",
+                "js/content_scripts/jbhifionline.js",
+                "js/content_scripts/base.js"
+            ]
+        },
+        {
             "matches": ["http://*.officeworks.com.au/*"],
             "js": [
                 "js/angular.min.js",
