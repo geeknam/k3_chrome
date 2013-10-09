@@ -86,7 +86,7 @@ function NotificationsController($scope, $http) {
                 if(message.cheaper) {
                     notification.onclick = function() {
                         chrome.tabs.create({
-                            url: 'http://www.kogan.com'+ product.url + UTM + '&utm_campaign=price-match'
+                            url: 'http://www.kogan.com'+ product.url + UTM + '&utm_campaign=price-match-' + message.competitor
                         });
                     };
                 }

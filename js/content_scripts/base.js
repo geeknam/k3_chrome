@@ -16,6 +16,7 @@ function NotificationsController($scope, $http) {
                 var product = data.objects[0];
                 var message = {
                     product: product,
+                    competitor: competitor
                 };
                 if(product.your_price < price) {
                     message.cheaper = true;

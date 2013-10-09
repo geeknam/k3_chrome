@@ -5,3 +5,4 @@ var price = img_src_split[img_src_split.length - 1].split('__')[0];
 if (price.indexOf('_') != 1) {
     price = price.split('_')[0];
 }
+var competitor = 'jbhifi';
