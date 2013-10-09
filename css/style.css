@@ -46,8 +46,18 @@ ul {
   border-bottom: 1px solid #ccc;
 }
 #notification-wrapper .logo img {
+  padding-left: 60px;
   height: 30px;
 }
+#notification-wrapper img.settings  {
+  padding: 5px 15px 0 0;
+  float:right;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+
 #notification-wrapper ul .new {
   background-color: #f0f5f9;
 }

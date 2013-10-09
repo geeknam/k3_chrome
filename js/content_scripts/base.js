@@ -14,10 +14,15 @@ function NotificationsController($scope, $http) {
         $http.get(SEARCH_API_URL + '?limit=1&keywords=' + product_name).success(function(data){
             if(data.objects.length) {
                 var product = data.objects[0];
+                var message = {
+                    product: product,
+                };
                 if(product.your_price < price) {
-                    chrome.runtime.sendMessage(product, function(response) {
-                        console.log(response);
-                    });
+                    message.cheaper = true;
+                    chrome.runtime.sendMessage(message, function(response) {});
+                } else {
+                    message.cheaper = false;
+                    chrome.runtime.sendMessage(message, function(response) {});
                 }
             }
         });

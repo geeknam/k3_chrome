@@ -16,6 +16,11 @@ function NotificationsController($scope, $http) {
         });
     }
     chrome.browserAction.setBadgeText({'text': ''});
+
+    $scope.open_settings = function() {
+        chrome.tabs.create({url: "options.html"});
+    };
+
 }
 
 

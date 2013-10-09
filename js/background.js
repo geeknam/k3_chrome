@@ -25,6 +25,17 @@ function NotificationsController($scope, $http) {
 
         // Listen for messages from content script
         this.listen();
+        this.check_first_install();
+    };
+
+    Notifications.prototype.check_first_install = function() {
+        console.log('check install');
+        // Check whether new version is installed
+        chrome.runtime.onInstalled.addListener(function(details){
+            if(details.reason == "install"){
+                chrome.tabs.create({url: "options.html"});
+            }
+        });
     };
 
     Notifications.prototype.init_options = function() {
@@ -57,19 +68,29 @@ function NotificationsController($scope, $http) {
 
     Notifications.prototype.listen = function() {
         chrome.runtime.onMessage.addListener(
-            function(product, sender, sendResponse) {
-
+            function(message, sender, sendResponse) {
+                console.log(message);
+                var product = message.product;
+                if(message.cheaper) {
+                    var body = product.title;
+                    var title = 'Only $' + product.your_price + ' at Kogan';
+                } else {
+                    var body = "This happens very rarely but this price is even better than Kogan.";
+                    var title = "We recommend you buy it";
+                }
                 var notification = webkitNotifications.createNotification(
                     'http://www.kogan.com/thumb/' + product.image + '?size=210x140',
-                    'Only $' + product.your_price + ' at Kogan',
-                    product.title
+                    title, body
                 );
 
-                notification.onclick = function() {
-                    chrome.tabs.create({
-                        url: 'http://www.kogan.com'+ product.url + UTM + '&utm_campaign=price-match'
-                    });
-                };
+                if(message.cheaper) {
+                    notification.onclick = function() {
+                        chrome.tabs.create({
+                            url: 'http://www.kogan.com'+ product.url + UTM + '&utm_campaign=price-match'
+                        });
+                    };
+                }
+
                 notification.show();
                 setTimeout(function() {
                     notification.cancel();

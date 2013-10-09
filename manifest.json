@@ -3,7 +3,7 @@
 
     "name": "Kogan Chrome Extension",
     "description": "Kogan Product Notifications",
-    "version": "1.0.7",
+    "version": "1.0.8",
 
     "permissions": [
         "http://www.kogan.com/",
@@ -11,7 +11,8 @@
         "pushMessaging",
         "notifications",
         "background",
-        "tabs"
+        "tabs",
+        "cookies"
     ],
     "background": {
         "page": "background_page.html"
