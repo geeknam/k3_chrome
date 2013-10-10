@@ -15,12 +15,14 @@ function OptionsController($scope) {
     $scope.show_notification = options['show_notification'];
     $scope.poll_interval = options['poll_interval'];
     $scope.event_types = options['event_types'];
+    $scope.frequency = options['frequency'];
 
     $scope.save_options = function() {
         var options = {
             'show_notification': this.show_notification,
             'poll_interval': this.poll_interval,
-            'event_types': this.event_types
+            'event_types': this.event_types,
+            'frequency': this.frequency
         };
         localStorage[OPTIONS_KEY] = JSON.stringify(options);
         $scope.status = 'Saved';

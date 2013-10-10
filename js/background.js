@@ -5,7 +5,6 @@ var poll_interval = 1; //minute
 var unreadEvents = 0;
 var _this;
 
-
 function NotificationsController($scope, $http) {
 
     var Notifications = function(){
@@ -29,7 +28,6 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.check_first_install = function() {
-        console.log('check install');
         // Check whether new version is installed
         chrome.runtime.onInstalled.addListener(function(details){
             if(details.reason == "install"){
@@ -69,7 +67,6 @@ function NotificationsController($scope, $http) {
     Notifications.prototype.listen = function() {
         chrome.runtime.onMessage.addListener(
             function(message, sender, sendResponse) {
-                console.log(message);
                 var product = message.product;
                 if(message.cheaper) {
                     var body = product.title;
@@ -157,20 +154,84 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.getLatestPushNotification = function() {
+        if(this.options.frequency == '1') {
+            this.parse_summary_notification();
+        } else {
+            var count;
+            var last_checked = localStorage.getItem(LAST_CHECK_KEY);
 
-        var count;
-        var last_checked = localStorage.getItem(LAST_CHECK_KEY);
-
-        $http.get(API_URL + "count/?timestamp=" + last_checked).success(function(data){
-            count = data['count'];
-            last_checked = data['timestamp'];
-            if(count > 0) {
-                _this.fetchLatestNotification();
-            }
-            _this.resetBadgeText(count);
-            localStorage.setItem(LAST_CHECK_KEY, last_checked);
-        });
+            $http.get(API_URL + "count/?timestamp=" + last_checked).success(function(data){
+                count = data['count'];
+                last_checked = data['timestamp'];
+                if(count > 0) {
+                    _this.fetchLatestNotification();
+                }
+                _this.resetBadgeText(count);
+                localStorage.setItem(LAST_CHECK_KEY, last_checked);
+            });
+        }
     };
+
+    Notifications.prototype.show_summary = function() {
+        var now = new Date();
+        var hour = now.getHours();
+        var last_shown = localStorage[LAST_SHOWN_SUMMARY];
+        if(!last_shown) {
+            if (hour > 14) {
+                localStorage[LAST_SHOWN_SUMMARY] = now.getTime();
+                return true;
+            return false;
+        } else {
+            last_shown = new Date(last_shown);
+            if(last_shown.getDate() < now.getDate() && hour > 14) {
+                localStorage[LAST_SHOWN_SUMMARY] = now.getTime();
+                return true;
+            }
+            return false;
+        }
+
+    }
+
+    Notifications.prototype.parse_summary_notification = function() {
+        var show_summary = this.show_summary();
+        if(show_summary) { 
+            $http.get(API_URL).success(function(data){
+                var summary = {};
+                angular.forEach(data, function(value, key){
+                    if(value.type in summary) {
+                        summary[value.type] += 1;
+                    } else {
+                        summary[value.type] = 0;
+                    }
+                });
+                _this.get_summary_notification(summary);
+            });
+        }
+    }
+
+    Notifications.prototype.get_summary_notification = function(summary) {
+        var event_map = {}
+        var message = [];
+        angular.forEach(EVENT_TYPES, function(value, key) {
+            event_map[value.value] = value.name;
+        });
+        for(prop in summary) {
+            message.push(summary[prop] + ' ' + event_map[prop]);
+        }
+        message = message.join(', ');
+        var notification = webkitNotifications.createNotification(
+            'icon.png', 'Daily Summary', message
+        );
+        notification.onclick = function() {
+            chrome.tabs.create({
+                url: 'http://www.kogan.com/au/notification/all/' + UTM + '&utm_campaign=summary'
+            });
+        };
+        notification.show();
+        setTimeout(function() {
+            notification.cancel();
+        }, 5000);
+    }
 
     new Notifications();
 

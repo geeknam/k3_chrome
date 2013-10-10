@@ -3,7 +3,7 @@
 
     "name": "Kogan Chrome Extension",
     "description": "Kogan Product Notifications",
-    "version": "1.0.8",
+    "version": "1.0.0",
 
     "permissions": [
         "http://www.kogan.com/",
@@ -89,6 +89,12 @@
                 "js/settings.js",
                 "js/content_scripts/ebay.js",
                 "js/content_scripts/base.js"
+            ]
+        },
+        {
+            "matches": ["http://*.facebook.com/*", "http://*.gumtree.com.au/*", "http://*.paypal.com/*", "http://*.apple.com/*"],
+            "js": [
+                "js/content_scripts/future.js"
             ]
         }
   ],
