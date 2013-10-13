@@ -180,6 +180,7 @@ function NotificationsController($scope, $http) {
             if (hour > 14) {
                 localStorage[LAST_SHOWN_SUMMARY] = now.getTime();
                 return true;
+            }
             return false;
         } else {
             last_shown = new Date(last_shown);
