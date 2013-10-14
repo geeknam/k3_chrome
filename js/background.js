@@ -154,7 +154,7 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.getLatestPushNotification = function() {
-        if(this.options.frequency == '1') {
+        if(_this.options.frequency == '1') {
             this.parse_summary_notification();
         } else {
             var count;
