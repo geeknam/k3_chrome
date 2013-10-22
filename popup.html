@@ -14,6 +14,11 @@
             <a href="http://www.kogan.com/" target="_blank"><img src="logo.png"></a>
             <img src="settings.png" ng-click="open_settings()" class="settings">
         </div>
+        <div class="search">
+            <input type="text" placeholder="Search here..." name="search" ng-model="keyword" ng-enter="search()" />
+            <button ng-click="search()">Search</button>
+        </div>
+
         <ul id="notification-list">
             <li data-ng-repeat="notification in notifications">
             <section class="notification-box">

@@ -1,5 +1,20 @@
 var KoganApp = angular.module('KoganApp', []);
 
+
+KoganApp.directive('ngEnter', function() {
+    return function(scope, element, attrs) {
+        element.bind("keydown keypress", function(event) {
+            if(event.which === 13) {
+                scope.$apply(function(){
+                    scope.$eval(attrs.ngEnter);
+                });
+
+                event.preventDefault();
+            }
+        });
+    };
+});
+
 function NotificationsController($scope, $http) {
     var notifications = JSON.parse(localStorage.getItem(NOTIFICATIONS));
     if(notifications !== null) {
@@ -19,6 +34,12 @@ function NotificationsController($scope, $http) {
 
     $scope.open_settings = function() {
         chrome.tabs.create({url: "options.html"});
+    };
+
+    $scope.search = function() {
+        chrome.tabs.create({
+            url: "http://www.kogan.com/au/search/?keywords=" + $scope.keyword
+        });
     };
 
 }
