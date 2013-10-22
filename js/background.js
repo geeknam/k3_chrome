@@ -155,7 +155,7 @@ function NotificationsController($scope, $http) {
 
     Notifications.prototype.getLatestPushNotification = function() {
         if(_this.options.frequency == '1') {
-            this.parse_summary_notification();
+            _this.parse_summary_notification();
         } else {
             var count;
             var last_checked = localStorage.getItem(LAST_CHECK_KEY);
@@ -195,8 +195,8 @@ function NotificationsController($scope, $http) {
 
     Notifications.prototype.parse_summary_notification = function() {
         var show_summary = this.show_summary();
-        if(show_summary) { 
-            $http.get(API_URL).success(function(data){
+        if(show_summary) {
+            $http.get(API_URL + '?full=1').success(function(data){
                 var summary = {};
                 angular.forEach(data, function(value, key){
                     if(value.type in summary) {
