@@ -153,9 +153,22 @@ function NotificationsController($scope, $http) {
         });
     };
 
+    Notifications.prototype.get_count = function() {
+        var count;
+        var last_checked = localStorage.getItem(LAST_CHECK_KEY);
+
+        $http.get(API_URL + "count/?timestamp=" + last_checked).success(function(data){
+            count = data['count'];
+            last_checked = data['timestamp'];
+            _this.resetBadgeText(count);
+            localStorage.setItem(LAST_CHECK_KEY, last_checked);
+        });
+    }
+
     Notifications.prototype.getLatestPushNotification = function() {
         if(_this.options.frequency == '1') {
             _this.parse_summary_notification();
+            _this.get_count();
         } else {
             var count;
             var last_checked = localStorage.getItem(LAST_CHECK_KEY);
@@ -191,7 +204,7 @@ function NotificationsController($scope, $http) {
             return false;
         }
 
-    }
+    };
 
     Notifications.prototype.parse_summary_notification = function() {
         var show_summary = this.show_summary();
@@ -208,7 +221,7 @@ function NotificationsController($scope, $http) {
                 _this.get_summary_notification(summary);
             });
         }
-    }
+    };
 
     Notifications.prototype.get_summary_notification = function(summary) {
         var event_map = {}
@@ -217,7 +230,9 @@ function NotificationsController($scope, $http) {
             event_map[value.value] = value.name;
         });
         for(prop in summary) {
-            message.push(summary[prop] + ' ' + event_map[prop]);
+            if(summary[prop] > 0) {
+                message.push(summary[prop] + ' ' + event_map[prop]);
+            }
         }
         message = message.join(', ');
         var notification = webkitNotifications.createNotification(
@@ -232,7 +247,7 @@ function NotificationsController($scope, $http) {
         setTimeout(function() {
             notification.cancel();
         }, 5000);
-    }
+    };
 
     new Notifications();
 

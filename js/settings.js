@@ -9,6 +9,11 @@ var OPTIONS_KEY = 'options';
 
 var EVENT_TYPES = [
     {
+        'name': 'Category Events',
+        'value': 'category',
+        'checked': true,
+    },
+    {
         'name': 'Price Drops',
         'value': 'price-drop',
         'checked': true,

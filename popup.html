@@ -11,7 +11,7 @@
 
     <div id="notification-wrapper">
         <div class="logo">
-            <a href="http://www.kogan.com/?utm_source=kogan&utm_medium=chrome-extension&utm_campaign=banner" target="_blank"><img src="logo.png"></a>
+            <a href="http://www.kogan.com/?utm_source=kogan&utm_medium=chrome-extension&utm_campaign=popup" target="_blank"><img src="logo.png"></a>
             <img src="settings.png" ng-click="open_settings()" class="settings">
         </div>
         <div class="search">
@@ -21,7 +21,7 @@
 
         <ul id="notification-list">
             <li data-ng-repeat="notification in notifications">
-            <section class="notification-box">
+            <section class="notification-box" ng-click="open_link(notification)" >
                 <div class="image">
                     <a href="http://www.kogan.com{{ notification.data.url }}" target="_blank"><img src="{{ notification.data.image_url }}" alt="{{ notification.data.title }}"/></a>
                 </div>
