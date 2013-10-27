@@ -6,8 +6,7 @@
     "version": "1.0.4",
 
     "permissions": [
-        "http://www.kogan.com/",
-        "https://www.googleapis.com/",
+        "http://*/*",
         "pushMessaging",
         "notifications",
         "background",

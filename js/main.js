@@ -32,13 +32,17 @@ function NotificationsController($scope, $http) {
     }
     chrome.browserAction.setBadgeText({'text': ''});
 
+    $scope.open_link = function(notification){
+        chrome.tabs.create({url: "http://www.kogan.com" + notification.data.url});
+    }
+
     $scope.open_settings = function() {
         chrome.tabs.create({url: "options.html"});
     };
 
     $scope.search = function() {
         chrome.tabs.create({
-            url: "http://www.kogan.com/au/search/?keywords=" + $scope.keyword
+            url: "http://www.kogan.com/au/search/?keywords=" + $scope.keyword + '&' + UTM.slice(1)
         });
     };
 
