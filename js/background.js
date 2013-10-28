@@ -18,8 +18,8 @@ function NotificationsController($scope, $http) {
         var interval = this.get_poll_interval();
 
         if (typeof(localStorage) != 'undefined') {
-            var checkInterval = setInterval(this.getLatestPushNotification, interval * 60000);
-            this.getLatestPushNotification();
+            var checkInterval = setInterval(this.check_for_notification, interval * 60000);
+            this.check_for_notification();
         }
 
         // Listen for messages from content script
@@ -136,11 +136,11 @@ function NotificationsController($scope, $http) {
         }, 5000);
     };
 
-    Notifications.prototype.fetchLatestNotification = function() {
+    Notifications.prototype.fetchLatestNotification = function(show_popup) {
 
         $http.get(API_URL).success(function(data){
 
-            if(_this.validate_notification(data[0])) {
+            if(_this.validate_notification(data[0]) && show_popup) {
                 _this.showNotification(data[0]);
                 localStorage.setItem(NOTIFICATION_KEY, data[0].data.url);
             }
@@ -153,35 +153,27 @@ function NotificationsController($scope, $http) {
         });
     };
 
-    Notifications.prototype.get_count = function() {
+    Notifications.prototype.get_notifications = function(show_popup) {
         var count;
         var last_checked = localStorage.getItem(LAST_CHECK_KEY);
 
         $http.get(API_URL + "count/?timestamp=" + last_checked).success(function(data){
             count = data['count'];
             last_checked = data['timestamp'];
+            if(count > 0) {
+                _this.fetchLatestNotification(show_popup);
+            }
             _this.resetBadgeText(count);
             localStorage.setItem(LAST_CHECK_KEY, last_checked);
         });
-    }
+    };
 
-    Notifications.prototype.getLatestPushNotification = function() {
+    Notifications.prototype.check_for_notification = function() {
         if(_this.options.frequency == '1') {
             _this.parse_summary_notification();
-            _this.get_count();
+            _this.get_notifications(false);
         } else {
-            var count;
-            var last_checked = localStorage.getItem(LAST_CHECK_KEY);
-
-            $http.get(API_URL + "count/?timestamp=" + last_checked).success(function(data){
-                count = data['count'];
-                last_checked = data['timestamp'];
-                if(count > 0) {
-                    _this.fetchLatestNotification();
-                }
-                _this.resetBadgeText(count);
-                localStorage.setItem(LAST_CHECK_KEY, last_checked);
-            });
+            _this.get_notifications(true);
         }
     };
 
@@ -224,7 +216,7 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.get_summary_notification = function(summary) {
-        var event_map = {}
+        var event_map = {};
         var message = [];
         angular.forEach(EVENT_TYPES, function(value, key) {
             event_map[value.value] = value.name;

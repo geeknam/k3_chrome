@@ -20,6 +20,10 @@ ul {
     -webkit-padding-start: 0px;
 }
 
+#notification-wrapper {
+  min-width: 380px;
+}
+
 #notification-wrapper p {
   font-weight: bold;
   font-size: 13px;
