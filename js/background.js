@@ -20,8 +20,8 @@ function NotificationsController($scope, $http) {
         var interval = this.get_poll_interval();
 
         if (typeof(localStorage) != 'undefined') {
-            var checkInterval = setInterval(this.check_for_notification, interval * 25000);
-            // this.check_for_notification();
+            var checkInterval = setInterval(this.check_for_notification, interval * 60000);
+            this.check_for_notification();
         }
 
         // Listen for messages from content script
