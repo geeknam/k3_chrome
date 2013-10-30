@@ -6,6 +6,7 @@
     "version": "1.0.4",
 
     "permissions": [
+        "idle",
         "http://*/*",
         "pushMessaging",
         "notifications",

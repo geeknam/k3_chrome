@@ -2,6 +2,8 @@ var KoganApp = angular.module('KoganApp', []);
 
 var poll_interval = 1; //minute
 
+var last_state = null;
+var last_state_time = null;
 var unreadEvents = 0;
 var _this;
 
@@ -18,13 +20,14 @@ function NotificationsController($scope, $http) {
         var interval = this.get_poll_interval();
 
         if (typeof(localStorage) != 'undefined') {
-            var checkInterval = setInterval(this.check_for_notification, interval * 60000);
-            this.check_for_notification();
+            var checkInterval = setInterval(this.check_for_notification, interval * 25000);
+            // this.check_for_notification();
         }
 
         // Listen for messages from content script
         this.listen();
         this.check_first_install();
+        this.check_idle_state();
     };
 
     Notifications.prototype.check_first_install = function() {
@@ -89,10 +92,7 @@ function NotificationsController($scope, $http) {
                 }
 
                 notification.show();
-                setTimeout(function() {
-                    notification.cancel();
-                }, 9000);
-
+                this.discard_notification(notification);
             }
         );
     };
@@ -131,9 +131,7 @@ function NotificationsController($scope, $http) {
             _this.resetBadgeText(unreadEvents - 1);
         };
         notification.show();
-        setTimeout(function() {
-            notification.cancel();
-        }, 5000);
+        this.discard_notification(notification);
     };
 
     Notifications.prototype.fetchLatestNotification = function(show_popup) {
@@ -236,10 +234,40 @@ function NotificationsController($scope, $http) {
             });
         };
         notification.show();
-        setTimeout(function() {
-            notification.cancel();
-        }, 5000);
+        this.discard_notification(notification);
+
     };
+
+    Notifications.prototype.discard_notification = function(notification) {
+        if(last_state == 'active'){
+            setTimeout(function() {
+                notification.cancel();
+            }, 15000);
+        }
+        else {
+            setInterval(function() {
+                if(last_state == 'active') {
+                    setTimeout(function() {
+                        notification.cancel();
+                    }, 10000);
+                    clearInterval(this);
+                }
+            }, 1000);
+        }
+    };
+
+    Notifications.prototype.check_idle_state = function() {
+        setInterval(function() {
+            chrome.idle.queryState(15, function(state) {
+                var time = new Date();
+                if (last_state != state) {
+                    last_state = state;
+                    last_state_time = time;
+                }
+            });
+        }, 2000);
+    };
+
 
     new Notifications();
 
