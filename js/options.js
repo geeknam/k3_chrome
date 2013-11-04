@@ -26,5 +26,8 @@ function OptionsController($scope) {
         };
         localStorage[OPTIONS_KEY] = JSON.stringify(options);
         $scope.status = 'Saved';
+        setTimeout(function(){
+            chrome.runtime.reload();
+        }, 1000);
     };
 }

@@ -57,6 +57,7 @@ function NotificationsController($scope, $http) {
                 preferred.push(event.value);
             }
         });
+        preferred.push('custom');  // allow future custom events
         return preferred;
     };
 
@@ -64,19 +65,21 @@ function NotificationsController($scope, $http) {
         if(!this.options) {
             return poll_interval;
         }
-        return parseInt(this.options['poll_interval']);
+        return parseInt(this.options.poll_interval);
     };
 
     Notifications.prototype.listen = function() {
         chrome.runtime.onMessage.addListener(
             function(message, sender, sendResponse) {
                 var product = message.product;
+                var body;
+                var title;
                 if(message.cheaper) {
-                    var body = product.title;
-                    var title = 'Only $' + product.your_price + ' at Kogan';
+                    body = product.title;
+                    title = 'Only $' + product.your_price + ' at Kogan';
                 } else {
-                    var body = "This happens very rarely but this price is even better than Kogan.";
-                    var title = "We recommend you buy it";
+                    body = "This happens very rarely but this price is even better than Kogan.";
+                    title = "We recommend you buy it";
                 }
                 var notification = webkitNotifications.createNotification(
                     'http://www.kogan.com/thumb/' + product.image + '?size=210x140',
@@ -109,7 +112,6 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.validate_notification = function(event) {
-        this.init_options();
         var show_notification = this.options['show_notification'];
         var lastNotification = localStorage.getItem(NOTIFICATION_KEY);
         var preferred = this.get_preferred_event_types();
@@ -119,7 +121,7 @@ function NotificationsController($scope, $http) {
         return false;
     };
 
-    Notifications.prototype.showNotification = function(event) {
+    Notifications.prototype.show_notification = function(event) {
         var notification = webkitNotifications.createNotification(
             event.data.image_url,
             event.message,
@@ -134,12 +136,12 @@ function NotificationsController($scope, $http) {
         this.discard_notification(notification);
     };
 
-    Notifications.prototype.fetchLatestNotification = function(show_popup) {
+    Notifications.prototype.fetch_latest_notification = function(show_popup) {
 
         $http.get(API_URL).success(function(data){
 
             if(_this.validate_notification(data[0]) && show_popup) {
-                _this.showNotification(data[0]);
+                _this.show_notification(data[0]);
                 localStorage.setItem(NOTIFICATION_KEY, data[0].data.url);
             }
 
@@ -159,7 +161,7 @@ function NotificationsController($scope, $http) {
             count = data['count'];
             last_checked = data['timestamp'];
             if(count > 0) {
-                _this.fetchLatestNotification(show_popup);
+                _this.fetch_latest_notification(show_popup);
             }
             _this.resetBadgeText(count);
             localStorage.setItem(LAST_CHECK_KEY, last_checked);
@@ -205,7 +207,7 @@ function NotificationsController($scope, $http) {
                     if(value.type in summary) {
                         summary[value.type] += 1;
                     } else {
-                        summary[value.type] = 0;
+                        summary[value.type] = 1;
                     }
                 });
                 _this.get_summary_notification(summary);

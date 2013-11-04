@@ -23,10 +23,10 @@
             <li data-ng-repeat="notification in notifications">
             <section class="notification-box" ng-click="open_link(notification)" >
                 <div class="image">
-                    <a href="http://www.kogan.com{{ notification.data.url }}" target="_blank"><img src="{{ notification.data.image_url }}" alt="{{ notification.data.title }}"/></a>
+                    <a href="http://www.kogan.com{{ notification.data.url }}"><img src="{{ notification.data.image_url }}" alt="{{ notification.data.title }}"/></a>
                 </div>
                 <div class="message">
-                     <a href="http://www.kogan.com{{ notification.data.url }}" target="_blank">{{ notification.data.title }}</a>
+                     <a href="http://www.kogan.com{{ notification.data.url }}">{{ notification.data.title }}</a>
                      <p class="content">
                         <img src="{{ notification.icon }}" alt="{{ notification.data.title }}"/>
                         <span>{{ notification.message }}</span>
@@ -37,7 +37,7 @@
             </li>
         </ul>
     </div>
-     <a href="http://www.kogan.com/au/notification/all/" class="notifications-view-more" target="_blank">View more</a>
+     <a href="http://www.kogan.com/au/notification/all/?utm_source=kogan&utm_medium=chrome-extension&utm_campaign=list-bottom" class="notifications-view-more" target="_blank">View more</a>
 
     </body>
 </html>
