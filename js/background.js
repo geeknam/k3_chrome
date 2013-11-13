@@ -95,7 +95,7 @@ function NotificationsController($scope, $http) {
                 }
 
                 notification.show();
-                this.discard_notification(notification);
+                _this.discard_notification(notification);
             }
         );
     };
