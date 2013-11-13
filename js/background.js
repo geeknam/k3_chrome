@@ -177,6 +177,11 @@ function NotificationsController($scope, $http) {
         }
     };
 
+    Notifications.prototype.to_date = function(date) {
+        // Plain date without hours
+        return new Date(date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate());
+    };
+
     Notifications.prototype.show_summary = function() {
         var now = new Date();
         var hour = now.getHours();
@@ -188,8 +193,9 @@ function NotificationsController($scope, $http) {
             }
             return false;
         } else {
-            last_shown = new Date(last_shown);
-            if(last_shown.getDate() < now.getDate() && hour > 14) {
+            last_shown = this.to_date(new Date(parseInt(last_shown)));
+            now = this.to_date(now);
+            if(last_shown < now && hour > 14) {
                 localStorage[LAST_SHOWN_SUMMARY] = now.getTime();
                 return true;
             }
