@@ -179,7 +179,8 @@ function NotificationsController($scope, $http) {
 
     Notifications.prototype.to_date = function(date) {
         // Plain date without hours
-        return new Date(date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate());
+        var str = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        return new Date(str);
     };
 
     Notifications.prototype.show_summary = function() {
