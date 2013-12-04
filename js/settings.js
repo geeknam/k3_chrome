@@ -43,6 +43,11 @@ var EVENT_TYPES = [
         'value': 'new-newsroompost',
         'checked': true,
     },
+    {
+        'name': 'Deals',
+        'value': 'custom',
+        'checked': true,
+    }
 ];
 
 var DEFAULT_OPTIONS = {
