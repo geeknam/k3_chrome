@@ -59,3 +59,4 @@ var DEFAULT_OPTIONS = {
 
 
 var SEARCH_API_URL = "http://www.kogan.com/au/api/search/";
+var COMPARE_API_URL = "http://www.kogan.com/au/api/events/compare/";

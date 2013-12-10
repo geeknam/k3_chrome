@@ -23,7 +23,17 @@ function NotificationsController($scope, $http) {
                         chrome.runtime.sendMessage(message, function(response) {});
                     } else {
                         message.cheaper = false;
+                        var payload = {
+                            competitor_url: window.location.href,
+                            competitor_price: price,
+                            product: product.url
+                        };
                         chrome.runtime.sendMessage(message, function(response) {});
+                        $http({
+                            url: COMPARE_API_URL,
+                            method: "POST",
+                            data: payload,
+                        }).success(function (response) {});
                     }
                 }
             });

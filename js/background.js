@@ -162,8 +162,8 @@ function NotificationsController($scope, $http) {
             last_checked = data['timestamp'];
             if(count > 0) {
                 _this.fetch_latest_notification(show_popup);
+                _this.resetBadgeText(count);
             }
-            _this.resetBadgeText(count);
             localStorage.setItem(LAST_CHECK_KEY, last_checked);
         });
     };
