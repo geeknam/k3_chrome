@@ -1,9 +1,9 @@
 {
     "manifest_version": 2,
 
-    "name": "Kogan Chrome Extension",
-    "description": "Kogan Product Notifications",
-    "version": "1.0.6",
+    "name": "Kogan Deals Notifications",
+    "description": "Essential tool for Smart Shoppers!",
+    "version": "1.0.7",
 
     "permissions": [
         "idle",
@@ -95,6 +95,15 @@
             "matches": ["http://*.facebook.com/*", "http://*.gumtree.com.au/*", "http://*.paypal.com/*", "http://*.apple.com/*"],
             "js": [
                 "js/content_scripts/future.js"
+            ]
+        },
+        {
+            "matches": ["http://*.bigw.com.au/*"],
+            "js": [
+                "js/angular.min.js",
+                "js/settings.js",
+                "js/content_scripts/bigw.js",
+                "js/content_scripts/base.js"
             ]
         }
   ],
