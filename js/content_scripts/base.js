@@ -7,6 +7,12 @@ angular.element(document).ready(function() {
 var body = document.getElementsByTagName('body');
 body[0].setAttribute("data-ng-controller", "NotificationsController");
 
+// Competitors which we don't want to show
+// recommend to buy this product
+var EXCLUDE_PROVIDERS = [
+    'ebay',
+];
+
 
 function NotificationsController($scope, $http) {
     if(product_name && price) {
@@ -18,7 +24,7 @@ function NotificationsController($scope, $http) {
                         product: product,
                         competitor: competitor
                     };
-                    if(product.your_price < price) {
+                    if(product.your_price < price && price - product.your_price < 300) {
                         message.cheaper = true;
                         chrome.runtime.sendMessage(message, function(response) {});
                     } else {
@@ -28,12 +34,17 @@ function NotificationsController($scope, $http) {
                             competitor_price: price,
                             product: product.url
                         };
-                        chrome.runtime.sendMessage(message, function(response) {});
-                        $http({
-                            url: COMPARE_API_URL,
-                            method: "POST",
-                            data: payload,
-                        }).success(function (response) {});
+
+                        // If not in the blacklist, send request to comparison API endpoint
+                        if (EXCLUDE_PROVIDERS.indexOf(competitor) == -1) {
+                            // Notify the browser
+                            chrome.runtime.sendMessage(message, function(response) {});
+                            $http({
+                                url: COMPARE_API_URL,
+                                method: "POST",
+                                data: payload,
+                            }).success(function (response) {});
+                        }
                     }
                 }
             });
