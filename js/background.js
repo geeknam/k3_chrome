@@ -35,6 +35,7 @@ function NotificationsController($scope, $http) {
         chrome.runtime.onInstalled.addListener(function(details){
             if(details.reason == "install"){
                 chrome.tabs.create({url: "options.html"});
+                chrome.tabs.create({url: "http://www.kogan.com"});
             }
         });
     };
