@@ -24,7 +24,7 @@ function NotificationsController($scope, $http) {
                         product: product,
                         competitor: competitor
                     };
-                    if(product.your_price < price && price - product.your_price < 300) {
+                    if(product.your_price < price) {
                         message.cheaper = true;
                         chrome.runtime.sendMessage(message, function(response) {});
                     } else {
@@ -36,9 +36,9 @@ function NotificationsController($scope, $http) {
                         };
 
                         // If not in the blacklist, send request to comparison API endpoint
-                        if (EXCLUDE_PROVIDERS.indexOf(competitor) == -1) {
+                        if (EXCLUDE_PROVIDERS.indexOf(competitor) == -1 && price - product.your_price < 300) {
                             // Notify the browser
-                            chrome.runtime.sendMessage(message, function(response) {});
+                            // chrome.runtime.sendMessage(message, function(response) {});
                             $http({
                                 url: COMPARE_API_URL,
                                 method: "POST",
