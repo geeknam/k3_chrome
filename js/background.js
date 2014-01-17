@@ -137,11 +137,13 @@ function NotificationsController($scope, $http) {
         this.discard_notification(notification);
     };
 
-    Notifications.prototype.fetch_latest_notification = function(show_popup) {
+    Notifications.prototype.fetch_latest_notification = function(show_popup, show_announcement) {
 
         $http.get(API_URL).success(function(data){
-
-            if(_this.validate_notification(data[0]) && show_popup) {
+            // Show announcement even if daily summary is enabled
+            if(show_announcement && data[0].type == 'custom') {
+                _this.show_notification(data[0]);
+            } else if (_this.validate_notification(data[0]) && show_popup) {
                 _this.show_notification(data[0]);
                 localStorage.setItem(NOTIFICATION_KEY, data[0].data.url);
             }
@@ -154,7 +156,7 @@ function NotificationsController($scope, $http) {
         });
     };
 
-    Notifications.prototype.get_notifications = function(show_popup) {
+    Notifications.prototype.get_notifications = function(show_popup, show_announcement) {
         var count;
         var last_checked = localStorage.getItem(LAST_CHECK_KEY);
 
@@ -162,7 +164,7 @@ function NotificationsController($scope, $http) {
             count = data['count'];
             last_checked = data['timestamp'];
             if(count > 0) {
-                _this.fetch_latest_notification(show_popup);
+                _this.fetch_latest_notification(show_popup, show_announcement);
                 _this.resetBadgeText(count);
             }
             localStorage.setItem(LAST_CHECK_KEY, last_checked);
@@ -172,9 +174,9 @@ function NotificationsController($scope, $http) {
     Notifications.prototype.check_for_notification = function() {
         if(_this.options.frequency == '1') {
             _this.parse_summary_notification();
-            _this.get_notifications(false);
+            _this.get_notifications(false, true);
         } else {
-            _this.get_notifications(true);
+            _this.get_notifications(true, false);
         }
     };
 
