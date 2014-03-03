@@ -211,17 +211,19 @@ function NotificationsController($scope, $http) {
     Notifications.prototype.parse_summary_notification = function() {
         var show_summary = this.show_summary();
         if(show_summary) {
-            $http.get(API_URL + '?full=1').success(function(data){
-                var summary = {};
-                angular.forEach(data, function(value, key){
-                    if(value.type in summary) {
-                        summary[value.type] += 1;
-                    } else {
-                        summary[value.type] = 1;
-                    }
+            setTimeout(function(){
+                $http.get(API_URL + '?full=1').success(function(data){
+                    var summary = {};
+                    angular.forEach(data, function(value, key){
+                        if(value.type in summary) {
+                            summary[value.type] += 1;
+                        } else {
+                            summary[value.type] = 1;
+                        }
+                    });
+                    _this.get_summary_notification(summary);
                 });
-                _this.get_summary_notification(summary);
-            });
+            }, Math.floor((Math.random()*30000)+1000));
         }
     };
 
