@@ -90,7 +90,7 @@ function NotificationsController($scope, $http) {
                 if(message.cheaper) {
                     notification.onclick = function() {
                         chrome.tabs.create({
-                            url: 'http://www.kogan.com'+ product.url + UTM + '&utm_campaign=price-match-' + message.competitor
+                            url: DOMAIN + product.url + UTM + '&utm_campaign=price-match-' + message.competitor
                         });
                     };
                 }
@@ -130,7 +130,7 @@ function NotificationsController($scope, $http) {
         );
 
         notification.onclick = function() {
-            chrome.tabs.create({url: 'http://www.kogan.com'+ event.data.url});
+            chrome.tabs.create({url: DOMAIN + event.data.url});
             _this.resetBadgeText(unreadEvents - 1);
         };
         notification.show();

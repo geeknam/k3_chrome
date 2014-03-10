@@ -1,4 +1,5 @@
-var API_URL = 'http://www.kogan.com/au/api/events/';
+var DOMAIN = 'http://www.kogan.com'
+var API_URL = DOMAIN + '/au/api/events/';
 var UTM = '?utm_source=kogan&utm_medium=chrome-extension';
 
 var LAST_CHECK_KEY = 'last_checked';
@@ -58,5 +59,5 @@ var DEFAULT_OPTIONS = {
 };
 
 
-var SEARCH_API_URL = "http://www.kogan.com/au/api/search/";
-var COMPARE_API_URL = "http://www.kogan.com/au/api/events/compare/";
+var SEARCH_API_URL = DOMAIN + "/au/api/search/";
+var COMPARE_API_URL = DOMAIN + "/au/api/events/compare/";
