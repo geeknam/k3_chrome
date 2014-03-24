@@ -30,6 +30,7 @@ function NotificationsController($scope, $http) {
                     } else {
                         message.cheaper = false;
                         var payload = {
+                            competitor_product: product_name,
                             competitor_url: window.location.href,
                             competitor_price: price,
                             product: product.url
