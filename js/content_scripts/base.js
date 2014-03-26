@@ -37,7 +37,7 @@ function NotificationsController($scope, $http) {
                         };
 
                         // If not in the blacklist, send request to comparison API endpoint
-                        if (EXCLUDE_PROVIDERS.indexOf(competitor) == -1 && price - product.your_price < 300) {
+                        if (EXCLUDE_PROVIDERS.indexOf(competitor) == -1 && price - product.your_price < 100) {
                             // Notify the browser
                             // chrome.runtime.sendMessage(message, function(response) {});
                             $http({
