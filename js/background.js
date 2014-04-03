@@ -256,14 +256,14 @@ function NotificationsController($scope, $http) {
         if(last_state == 'active'){
             setTimeout(function() {
                 notification.cancel();
-            }, 15000);
+            }, 1500000);
         }
         else {
             setInterval(function() {
                 if(last_state == 'active') {
                     setTimeout(function() {
                         notification.cancel();
-                    }, 10000);
+                    }, 1000000);
                     clearInterval(this);
                 }
             }, 1000);

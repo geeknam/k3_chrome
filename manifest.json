@@ -3,7 +3,7 @@
 
     "name": "Kogan Deals Notifications",
     "description": "Essential tool for Smart Shoppers!",
-    "version": "1.1",
+    "version": "1.1.2",
 
     "permissions": [
         "idle",
@@ -103,6 +103,15 @@
                 "js/angular.min.js",
                 "js/settings.js",
                 "js/content_scripts/bigw.js",
+                "js/content_scripts/base.js"
+            ]
+        },
+        {
+            "matches": ["http://*.dwidigitalcameras.com.au/*"],
+            "js": [
+                "js/angular.min.js",
+                "js/settings.js",
+                "js/content_scripts/dwi.js",
                 "js/content_scripts/base.js"
             ]
         }
