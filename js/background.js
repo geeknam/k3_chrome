@@ -125,8 +125,8 @@ function NotificationsController($scope, $http) {
     Notifications.prototype.show_notification = function(event) {
         var notification = webkitNotifications.createNotification(
             event.data.image_url,
-            event.message,
-            event.data.title
+            event.data.title,
+            event.message
         );
 
         notification.onclick = function() {
