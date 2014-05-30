@@ -82,21 +82,23 @@ function NotificationsController($scope, $http) {
                     body = "This happens very rarely but this price is even better than Kogan.";
                     title = "We recommend you buy it";
                 }
-                var notification = webkitNotifications.createNotification(
-                    'http://www.kogan.com/thumb/' + product.image + '?size=210x140',
-                    title, body
-                );
-
+                var opt = {
+                    type: "image",
+                    title: title,
+                    message: body,
+                    iconUrl: 'icon.png',
+                    imageUrl: 'http://media.kogan.com/' + product.image
+                };
                 if(message.cheaper) {
-                    notification.onclick = function() {
+                     chrome.notifications.onClicked.addListener(function() {
                         chrome.tabs.create({
                             url: DOMAIN + product.url + UTM + '&utm_campaign=price-match-' + message.competitor
                         });
-                    };
+                    });
                 }
-
-                notification.show();
-                _this.discard_notification(notification);
+                chrome.notifications.create('kogan_price_comparison', opt, function(notification_id){
+                    _this.discard_notification(notification_id);
+                });
             }
         );
     };
@@ -123,18 +125,18 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.show_notification = function(event) {
-        var notification = webkitNotifications.createNotification(
-            event.data.image_url,
-            event.data.title,
-            event.message
-        );
-
-        notification.onclick = function() {
+        chrome.notifications.onClicked.addListener(function() {
             chrome.tabs.create({url: DOMAIN + event.data.url});
             _this.resetBadgeText(unreadEvents - 1);
-        };
-        notification.show();
-        this.discard_notification(notification);
+        });
+        chrome.notifications.create('kogan_notification', {
+            type: "basic",
+            title: event.data.title,
+            message: event.message,
+            iconUrl: 'http:' + event.data.image_url
+        }, function(notification_id){
+            _this.discard_notification(notification_id);
+        });
     };
 
     Notifications.prototype.fetch_latest_notification = function(show_popup, show_announcement) {
@@ -158,7 +160,7 @@ function NotificationsController($scope, $http) {
 
     Notifications.prototype.get_notifications = function(show_popup, show_announcement) {
         var count;
-        var last_checked = localStorage.getItem(LAST_CHECK_KEY);
+        var last_checked = '1401240132'; // localStorage.getItem(LAST_CHECK_KEY);
 
         $http.get(API_URL + "count/?timestamp=" + last_checked).success(function(data){
             count = data['count'];
@@ -223,7 +225,7 @@ function NotificationsController($scope, $http) {
                     });
                     _this.get_summary_notification(summary);
                 });
-            }, Math.floor((Math.random()*30000)+1000));
+            }, Math.floor((Math.random()*600000)+1000));
         }
     };
 
@@ -239,30 +241,35 @@ function NotificationsController($scope, $http) {
             }
         }
         message = message.join(', ');
-        var notification = webkitNotifications.createNotification(
-            'icon.png', 'Daily Summary', message
-        );
-        notification.onclick = function() {
+
+         chrome.notifications.onClicked.addListener(function() {
             chrome.tabs.create({
                 url: 'http://www.kogan.com/au/notification/all/' + UTM + '&utm_campaign=summary'
             });
-        };
-        notification.show();
-        this.discard_notification(notification);
+        });
+
+        chrome.notifications.create('kogan_daily_summary', {
+            type: "basic",
+            title: 'Daily Summary',
+            message: message,
+            iconUrl: 'icon.png'
+        }, function(notification_id){
+            _this.discard_notification(notification_id);
+        });
 
     };
 
-    Notifications.prototype.discard_notification = function(notification) {
+    Notifications.prototype.discard_notification = function(notification_id) {
         if(last_state == 'active'){
             setTimeout(function() {
-                notification.cancel();
+                chrome.notifications.clear(notification_id, function(){});
             }, 1500000);
         }
         else {
             setInterval(function() {
                 if(last_state == 'active') {
                     setTimeout(function() {
-                        notification.cancel();
+                        chrome.notifications.clear(notification_id, function(){});
                     }, 1000000);
                     clearInterval(this);
                 }
