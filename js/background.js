@@ -160,7 +160,7 @@ function NotificationsController($scope, $http) {
 
     Notifications.prototype.get_notifications = function(show_popup, show_announcement) {
         var count;
-        var last_checked = '1401240132'; // localStorage.getItem(LAST_CHECK_KEY);
+        var last_checked = localStorage.getItem(LAST_CHECK_KEY);
 
         $http.get(API_URL + "count/?timestamp=" + last_checked).success(function(data){
             count = data['count'];
