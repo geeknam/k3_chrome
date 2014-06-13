@@ -96,7 +96,7 @@ function NotificationsController($scope, $http) {
                         });
                     });
                 }
-                chrome.notifications.create('kogan_price_comparison', opt, function(notification_id){
+                chrome.notifications.create(null, opt, function(notification_id){
                     _this.discard_notification(notification_id);
                 });
             }
@@ -129,7 +129,7 @@ function NotificationsController($scope, $http) {
             chrome.tabs.create({url: DOMAIN + event.data.url});
             _this.resetBadgeText(unreadEvents - 1);
         });
-        chrome.notifications.create('kogan_notification', {
+        chrome.notifications.create(null, {
             type: "basic",
             title: event.data.title,
             message: event.message,
@@ -248,7 +248,7 @@ function NotificationsController($scope, $http) {
             });
         });
 
-        chrome.notifications.create('kogan_daily_summary', {
+        chrome.notifications.create(null, {
             type: "basic",
             title: 'Daily Summary',
             message: message,
