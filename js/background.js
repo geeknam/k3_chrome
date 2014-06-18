@@ -96,7 +96,7 @@ function NotificationsController($scope, $http) {
                         });
                     });
                 }
-                chrome.notifications.create(null, opt, function(notification_id){
+                chrome.notifications.create(product.url, opt, function(notification_id){
                     _this.discard_notification(notification_id);
                 });
             }
@@ -129,7 +129,7 @@ function NotificationsController($scope, $http) {
             chrome.tabs.create({url: DOMAIN + event.data.url});
             _this.resetBadgeText(unreadEvents - 1);
         });
-        chrome.notifications.create(null, {
+        chrome.notifications.create(event.data.url, {
             type: "basic",
             title: event.data.title,
             message: event.message,
@@ -248,7 +248,7 @@ function NotificationsController($scope, $http) {
             });
         });
 
-        chrome.notifications.create(null, {
+        chrome.notifications.create("daily-summary", {
             type: "basic",
             title: 'Daily Summary',
             message: message,
