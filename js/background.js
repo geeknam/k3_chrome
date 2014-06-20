@@ -90,7 +90,7 @@ function NotificationsController($scope, $http) {
                     imageUrl: 'http://media.kogan.com/' + product.image
                 };
                 if(message.cheaper) {
-                     chrome.notifications.onClicked.addListener(function() {
+                     chrome.notifications.onClicked.addListener(function(notification_id) {
                         chrome.tabs.create({
                             url: DOMAIN + product.url + UTM + '&utm_campaign=price-match-' + message.competitor
                         });
@@ -125,7 +125,7 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.show_notification = function(event) {
-        chrome.notifications.onClicked.addListener(function() {
+        chrome.notifications.onClicked.addListener(function(notification_id) {
             chrome.tabs.create({url: DOMAIN + event.data.url});
             _this.resetBadgeText(unreadEvents - 1);
         });
@@ -242,7 +242,7 @@ function NotificationsController($scope, $http) {
         }
         message = message.join(', ');
 
-         chrome.notifications.onClicked.addListener(function() {
+         chrome.notifications.onClicked.addListener(function(notification_id) {
             chrome.tabs.create({
                 url: 'http://www.kogan.com/au/notification/all/' + UTM + '&utm_campaign=summary'
             });
