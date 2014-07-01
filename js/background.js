@@ -28,6 +28,12 @@ function NotificationsController($scope, $http) {
         this.listen();
         this.check_first_install();
         this.check_idle_state();
+
+        chrome.notifications.onClicked.addListener(function(notification_url) {
+            chrome.tabs.create({url: DOMAIN + notification_url});
+            _this.resetBadgeText(unreadEvents - 1);
+        });
+
     };
 
     Notifications.prototype.check_first_install = function() {
@@ -89,14 +95,8 @@ function NotificationsController($scope, $http) {
                     iconUrl: 'icon.png',
                     imageUrl: 'http://media.kogan.com/' + product.image
                 };
-                if(message.cheaper) {
-                     chrome.notifications.onClicked.addListener(function(notification_id) {
-                        chrome.tabs.create({
-                            url: DOMAIN + product.url + UTM + '&utm_campaign=price-match-' + message.competitor
-                        });
-                    });
-                }
-                chrome.notifications.create(product.url, opt, function(notification_id){
+                notification_id = product.url + UTM + '&utm_campaign=price-match-' + message.competitor;
+                chrome.notifications.create(notification_id, opt, function(notification_id){
                     _this.discard_notification(notification_id);
                 });
             }
@@ -125,10 +125,6 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.show_notification = function(event) {
-        chrome.notifications.onClicked.addListener(function(notification_id) {
-            chrome.tabs.create({url: DOMAIN + event.data.url});
-            _this.resetBadgeText(unreadEvents - 1);
-        });
         chrome.notifications.create(event.data.url, {
             type: "basic",
             title: event.data.title,
@@ -242,13 +238,8 @@ function NotificationsController($scope, $http) {
         }
         message = message.join(', ');
 
-         chrome.notifications.onClicked.addListener(function(notification_id) {
-            chrome.tabs.create({
-                url: 'http://www.kogan.com/au/notification/all/' + UTM + '&utm_campaign=summary'
-            });
-        });
-
-        chrome.notifications.create("daily-summary", {
+        summary_notification_url = '/au/notification/all/' + UTM + '&utm_campaign=summary';
+        chrome.notifications.create(summary_notification_url, {
             type: "basic",
             title: 'Daily Summary',
             message: message,
