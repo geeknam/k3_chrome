@@ -125,7 +125,8 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.show_notification = function(event) {
-        chrome.notifications.create(event.data.url, {
+        var url = event.data.url + UTM + '&utm_campaign=' + event.type;
+        chrome.notifications.create(url, {
             type: "basic",
             title: event.data.title,
             message: event.message,
