@@ -1,4 +1,4 @@
-var DOMAIN = 'http://www.kogan.com';
+var DOMAIN = 'https://www.kogan.com';
 var API_URL = DOMAIN + '/au/api/events/';
 var UTM = '?utm_source=kogan&utm_medium=chrome-extension';
 

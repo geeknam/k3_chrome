@@ -93,7 +93,7 @@ function NotificationsController($scope, $http) {
                     title: title,
                     message: body,
                     iconUrl: 'icon.png',
-                    imageUrl: 'http://media.kogan.com/' + product.image
+                    imageUrl: 'https://www.kogan.com/thumb/' + product.image + '?size=600x400'
                 };
                 notification_id = product.url + UTM + '&utm_campaign=price-match-' + message.competitor;
                 chrome.notifications.create(notification_id, opt, function(notification_id){
