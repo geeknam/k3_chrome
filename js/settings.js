@@ -10,41 +10,6 @@ var OPTIONS_KEY = 'options';
 
 var EVENT_TYPES = [
     {
-        'name': 'Category Events',
-        'value': 'category',
-        'checked': true,
-    },
-    {
-        'name': 'Price Drops',
-        'value': 'price-drop',
-        'checked': true,
-    },
-    {
-        'name': 'Free Shipping',
-        'value': 'free-shipping',
-        'checked': true,
-    },
-    {
-        'name': 'Back In Stock',
-        'value': 'product-instock',
-        'checked': true,
-    },
-    {
-        'name': 'New Products',
-        'value': 'new-product',
-        'checked': true,
-    },
-    {
-        'name': 'Blog Posts',
-        'value': 'new-post',
-        'checked': true,
-    },
-    {
-        'name': 'Media Articles',
-        'value': 'new-newsroompost',
-        'checked': true,
-    },
-    {
         'name': 'Deals',
         'value': 'custom',
         'checked': true,
@@ -55,7 +20,8 @@ var DEFAULT_OPTIONS = {
     'show_notification': '1',
     'poll_interval': '1',
     'event_types': EVENT_TYPES,
-    'frequency': '1'
+    'frequency': '1',
+    'version': 1
 };
 
 
