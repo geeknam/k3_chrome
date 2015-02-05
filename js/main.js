@@ -34,7 +34,7 @@ function NotificationsController($scope, $http) {
 
     $scope.open_link = function(notification){
         chrome.tabs.create({url: "http://www.kogan.com" + notification.data.url});
-    }
+    };
 
     $scope.open_settings = function() {
         chrome.tabs.create({url: "options.html"});

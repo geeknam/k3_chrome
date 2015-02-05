@@ -48,12 +48,18 @@ function NotificationsController($scope, $http) {
 
     Notifications.prototype.init_options = function() {
         this.options = localStorage[OPTIONS_KEY];
+
         if(!this.options){
             this.options = DEFAULT_OPTIONS;
             localStorage[OPTIONS_KEY] = JSON.stringify(this.options);
         }
         else{
             this.options = JSON.parse(this.options);
+
+            if (!this.options.version || this.options.version < DEFAULT_OPTIONS.version) {
+                this.options = DEFAULT_OPTIONS;
+                localStorage[OPTIONS_KEY] = JSON.stringify(this.options);
+            }
         }
     };
 
