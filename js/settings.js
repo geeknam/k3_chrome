@@ -16,6 +16,41 @@ var EVENT_TYPES = [
     }
 ];
 
+var ALL_EVENT_TYPES = [
+    {
+        'name': 'Category Events',
+        'value': 'category'
+    },
+    {
+        'name': 'Price Drops',
+        'value': 'price-drop'
+    },
+    {
+        'name': 'Free Shipping',
+        'value': 'free-shipping'
+    },
+    {
+        'name': 'Back In Stock',
+        'value': 'product-instock'
+    },
+    {
+        'name': 'New Products',
+        'value': 'new-product'
+    },
+    {
+        'name': 'Blog Posts',
+        'value': 'new-post'
+    },
+    {
+        'name': 'Media Articles',
+        'value': 'new-newsroompost'
+    },
+    {
+        'name': 'Deals',
+        'value': 'custom'
+    }
+];
+
 var DEFAULT_OPTIONS = {
     'show_notification': '1',
     'poll_interval': '1',
