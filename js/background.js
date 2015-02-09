@@ -235,7 +235,7 @@ function NotificationsController($scope, $http) {
     Notifications.prototype.get_summary_notification = function(summary) {
         var event_map = {};
         var message = [];
-        angular.forEach(EVENT_TYPES, function(value, key) {
+        angular.forEach(ALL_EVENT_TYPES, function(value, key) {
             event_map[value.value] = value.name;
         });
         for(prop in summary) {
