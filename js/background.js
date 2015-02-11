@@ -143,7 +143,6 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.fetch_latest_notification = function(show_popup, show_announcement) {
-
         $http.get(API_URL).success(function(data){
             // Show announcement even if daily summary is enabled
             if(show_announcement && data[0].type == 'custom') {
@@ -177,84 +176,13 @@ function NotificationsController($scope, $http) {
     };
 
     Notifications.prototype.check_for_notification = function() {
-        if(_this.options.frequency == '1') {
-            _this.parse_summary_notification();
-            _this.get_notifications(false, true);
-        } else {
-            _this.get_notifications(true, false);
-        }
+        _this.get_notifications(true, false);
     };
 
     Notifications.prototype.to_date = function(date) {
         // Plain date without hours
         var str = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         return new Date(str);
-    };
-
-    Notifications.prototype.show_summary = function() {
-        var now = new Date();
-        var hour = now.getHours();
-        var last_shown = localStorage[LAST_SHOWN_SUMMARY];
-        if(!last_shown) {
-            if (hour > 14) {
-                localStorage[LAST_SHOWN_SUMMARY] = now.getTime();
-                return true;
-            }
-            return false;
-        } else {
-            last_shown = this.to_date(new Date(parseInt(last_shown)));
-            now = this.to_date(now);
-            if(last_shown < now && hour > 14) {
-                localStorage[LAST_SHOWN_SUMMARY] = now.getTime();
-                return true;
-            }
-            return false;
-        }
-
-    };
-
-    Notifications.prototype.parse_summary_notification = function() {
-        var show_summary = this.show_summary();
-        if(show_summary) {
-            setTimeout(function(){
-                $http.get(API_URL + '?full=1').success(function(data){
-                    var summary = {};
-                    angular.forEach(data, function(value, key){
-                        if(value.type in summary) {
-                            summary[value.type] += 1;
-                        } else {
-                            summary[value.type] = 1;
-                        }
-                    });
-                    _this.get_summary_notification(summary);
-                });
-            }, Math.floor((Math.random()*600000)+1000));
-        }
-    };
-
-    Notifications.prototype.get_summary_notification = function(summary) {
-        var event_map = {};
-        var message = [];
-        angular.forEach(ALL_EVENT_TYPES, function(value, key) {
-            event_map[value.value] = value.name;
-        });
-        for(prop in summary) {
-            if(summary[prop] > 0) {
-                message.push(summary[prop] + ' ' + event_map[prop]);
-            }
-        }
-        message = message.join(', ');
-
-        summary_notification_url = '/au/notification/all/' + UTM + '&utm_campaign=summary';
-        chrome.notifications.create(summary_notification_url, {
-            type: "basic",
-            title: 'Daily Summary',
-            message: message,
-            iconUrl: 'icon.png'
-        }, function(notification_id){
-            _this.discard_notification(notification_id);
-        });
-
     };
 
     Notifications.prototype.discard_notification = function(notification_id) {
