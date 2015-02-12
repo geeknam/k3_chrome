@@ -36,10 +36,6 @@ function NotificationsController($scope, $http) {
         chrome.tabs.create({url: "http://www.kogan.com" + notification.data.url});
     };
 
-    $scope.open_settings = function() {
-        chrome.tabs.create({url: "options.html"});
-    };
-
     $scope.search = function() {
         chrome.tabs.create({
             url: "http://www.kogan.com/au/search/?keywords=" + $scope.keyword + '&' + UTM.slice(1)
