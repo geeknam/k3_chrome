@@ -1,5 +1,5 @@
 var DOMAIN = 'https://www.kogan.com';
-var API_URL = DOMAIN + '/au/api/events/';
+var API_URL = DOMAIN + '/au/api/v1/events/';
 var UTM = '?utm_source=kogan&utm_medium=chrome-extension';
 
 var LAST_CHECK_KEY = 'last_checked';
@@ -8,13 +8,11 @@ var NOTIFICATION_KEY = 'notification_key';
 var NOTIFICATIONS = 'notifications';
 var OPTIONS_KEY = 'options';
 
-var EVENT_TYPES = [
-    {
-        'name': 'Deals',
-        'value': 'custom',
-        'checked': true,
-    }
-];
+var EVENT_TYPES = [{
+    'name': 'Deals',
+    'value': 'custom',
+    'checked': true,
+}];
 
 var DEFAULT_OPTIONS = {
     'show_notification': '1',
@@ -24,5 +22,5 @@ var DEFAULT_OPTIONS = {
     'version': 1
 };
 
-var SEARCH_API_URL = DOMAIN + "/au/api/search/";
-var COMPARE_API_URL = DOMAIN + "/au/api/events/compare/";
+var SEARCH_API_URL = DOMAIN + "/au/api/v1/search/";
+var COMPARE_API_URL = DOMAIN + "/au/api/v1/events/compare/";
