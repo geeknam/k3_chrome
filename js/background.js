@@ -107,6 +107,15 @@ function NotificationsController($scope, $http) {
                 });
             }
         );
+
+        chrome.runtime.onMessageExternal.addListener(
+            function(request, sender, sendResponse) {
+              if (request.ping) {
+                sendResponse(true);
+              }
+            }
+        );
+
     };
 
     Notifications.prototype.resetBadgeText = function(value) {
