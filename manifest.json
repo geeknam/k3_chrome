@@ -9,7 +9,6 @@
         "idle",
         "http://*/*",
         "https://*/*",
-        "pushMessaging",
         "notifications",
         "background",
         "tabs",
