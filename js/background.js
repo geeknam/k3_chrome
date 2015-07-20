@@ -11,7 +11,6 @@ function NotificationsController($scope, $http) {
 
     var Notifications = function(){
         _this = this;
-        this.notifications = {};
         this.options = null;
         this.init();
     };
@@ -33,38 +32,17 @@ function NotificationsController($scope, $http) {
         chrome.notifications.onClicked.addListener(function(notification_url) {
             chrome.tabs.create({url: DOMAIN + notification_url});
             _this.resetBadgeText(unreadEvents - 1);
-            _this.destroyNotification(notification_url);
-        });
-
-        chrome.notifications.onClosed.addListener(function(id) {
-            _this.destroyNotification(id);
         });
     };
 
-    Notifications.prototype.destroyNotification = function(id) {
-        clearTimeout(_this.notifications[id].callback)
-        chrome.notifications.clear(id);
-        _this.notifications[id].dismissed = true;
-    };
-
-    Notifications.prototype.createNotification = function(url, options) {
-        options.priority = options.priority || 1;
-        chrome.notifications.create(url, options, function (id) {
-            _this.notifications[url] = _this.notifications[url] || {};
-            // setup 30 minute timer
-            if (typeof _this.notifications[url].dismissed === 'undefined') {
-                setTimeout(function() {
-                    _this.destroyNotification(url);
-                }, 30 * 60 * 1000);
-            }
-            if (!_this.notifications[url].dismissed) {
-                _this.notifications[url].dismissed = false;
-                _this.notifications[url].callback = setTimeout(function() {
-                    options.priority = options.priority == 2 ? 1 : 2;
-                    _this.createNotification(url, options);
-                }, 1000);
-            }
-        });
+    Notifications.prototype.createNotification = function(title, options) {
+        var notification = new Notification(title, options);
+        notification.onclick = function() {
+          window.open(options.url);
+        };
+        var timeout = setTimeout(function() {
+            notification.close();
+        }, 30 * 60 * 1000);
     };
 
     Notifications.prototype.check_first_install = function() {
@@ -170,11 +148,10 @@ function NotificationsController($scope, $http) {
 
     Notifications.prototype.show_notification = function(event) {
         var url = event.data.url + UTM + '&utm_campaign=' + event.type;
-        this.createNotification(url, {
-            type: "basic",
-            title: event.data.title,
-            message: event.message,
-            iconUrl: 'http:' + event.data.image_url
+        this.createNotification(event.data.title, {
+            url: url,
+            body: event.message,
+            icon: 'http:' + event.data.image_url
         });
     };
 
