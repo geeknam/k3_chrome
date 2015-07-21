@@ -33,7 +33,16 @@ function NotificationsController($scope, $http) {
             chrome.tabs.create({url: DOMAIN + notification_url});
             _this.resetBadgeText(unreadEvents - 1);
         });
+    };
 
+    Notifications.prototype.createNotification = function(title, options) {
+        var notification = new Notification(title, options);
+        notification.onclick = function() {
+          window.open(options.url);
+        };
+        var timeout = setTimeout(function() {
+            notification.close();
+        }, 30 * 60 * 1000);
     };
 
     Notifications.prototype.check_first_install = function() {
@@ -114,7 +123,6 @@ function NotificationsController($scope, $http) {
               }
             }
         );
-
     };
 
     Notifications.prototype.resetBadgeText = function(value) {
@@ -140,13 +148,10 @@ function NotificationsController($scope, $http) {
 
     Notifications.prototype.show_notification = function(event) {
         var url = event.data.url + UTM + '&utm_campaign=' + event.type;
-        chrome.notifications.create(url, {
-            type: "basic",
-            title: event.data.title,
-            message: event.message,
-            iconUrl: 'http:' + event.data.image_url
-        }, function(notification_id){
-            _this.discard_notification(notification_id);
+        this.createNotification(event.data.title, {
+            url: url,
+            body: event.message,
+            icon: 'http:' + event.data.image_url
         });
     };
 
