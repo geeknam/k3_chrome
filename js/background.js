@@ -50,7 +50,7 @@ function NotificationsController($scope, $http) {
         chrome.runtime.onInstalled.addListener(function(details){
             if (details.reason == "install" ) {
                 chrome.tabs.getSelected(function(tab) {
-                    if (tab.url.indexOf('//www.kogan.com') > -1) {
+                    if (tab.url.indexOf('//www.kogan.com') === -1) {
                         chrome.tabs.create({url: "https://www.kogan.com/"});
                     }
                 });
