@@ -48,8 +48,12 @@ function NotificationsController($scope, $http) {
     Notifications.prototype.check_first_install = function() {
         // Check whether new version is installed
         chrome.runtime.onInstalled.addListener(function(details){
-            if(details.reason == "install"){
-                chrome.tabs.create({url: "http://www.kogan.com"});
+            if (details.reason == "install" ) {
+                chrome.tabs.getSelected(function(tab) {
+                    if (tab.url.indexOf('//www.kogan.com') === -1) {
+                        chrome.tabs.create({url: "https://www.kogan.com/"});
+                    }
+                });
             }
         });
     };
