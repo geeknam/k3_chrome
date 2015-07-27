@@ -38,7 +38,7 @@ function NotificationsController($scope, $http) {
     Notifications.prototype.createNotification = function(title, options) {
         var notification = new Notification(title, options);
         notification.onclick = function() {
-          window.open(options.url);
+          window.open('https://www.kogan.com' + options.url);
         };
         var timeout = setTimeout(function() {
             notification.close();
