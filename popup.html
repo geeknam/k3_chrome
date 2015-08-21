@@ -23,7 +23,7 @@
             <section class="notification-box" ng-click="open_link(notification)" >
                 <div class="image">
                     <a href="http://www.kogan.com{{ notification.data.url }}">
-                        <img src="http:{{ notification.data.image_url }}" alt="{{ notification.data.title }}"/>
+                        <img src="{{ notification.data.image_url }}" alt="{{ notification.data.title }}"/>
                     </a>
                 </div>
                 <div class="message">
