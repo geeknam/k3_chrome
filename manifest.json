@@ -3,7 +3,7 @@
 
     "name": "Kogan.com Deals Notifications",
     "description": "Essential tool for Smart Shoppers!",
-    "version": "1.3.6",
+    "version": "1.3.7",
 
     "permissions": [
         "idle",
