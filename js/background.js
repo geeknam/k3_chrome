@@ -155,7 +155,7 @@ function NotificationsController($scope, $http) {
         this.createNotification(event.data.title, {
             url: url,
             body: event.message,
-            icon: 'http:' + event.data.image_url
+            icon: event.data.image_url
         });
     };
 
